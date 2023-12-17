@@ -55,6 +55,7 @@ app.post('/register/',async(request,response)=>{
 
 //User Login Api
 app.post('/login/',async(request,response)=>{
+    console.log('login page')
     const {username,password} = request.body
     const getUserQuery = `SELECT*FROM user WHERE username = '${username}'`;
     const dbUser = await db.get(getUserQuery)
