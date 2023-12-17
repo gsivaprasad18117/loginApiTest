@@ -53,6 +53,10 @@ app.post('/register/',async(request,response)=>{
     }
 });
 
+app.get('/bot/',async(request,response)=>{
+    response.send('The path is changing')
+})
+
 //User Login Api
 app.post('/login/',async(request,response)=>{
     console.log('login page')
