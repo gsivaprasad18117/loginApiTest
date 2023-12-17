@@ -61,13 +61,12 @@ app.get('/bot/',async(request,response)=>{
 
 //User Login Api
 app.post('/login/',async(request,response)=>{
-    console.log('login page')
     const {username,password} = request.body
     const getUserQuery = `SELECT*FROM user WHERE username = '${username}'`;
     const dbUser = await db.get(getUserQuery)
     if(dbUser===undefined){
         response.status(400);
-        response.send("Username or Password is Incorrect")
+        response.send("Username or Password is Incorrect");
     }else{
         const isPasswordCorrect = await bcrypt.compare(password,dbUser.password);
         if(isPasswordCorrect){
