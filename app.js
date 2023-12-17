@@ -21,8 +21,8 @@ const initializeDBAnsServer = async ()=>{
             filename:dbPath,
             driver:sqlite3.Database,    
         })
-        app.listen(3001,()=>{
-            console.log("server is running at 3001")
+        app.listen(3000,()=>{
+            console.log("server is running at 3000")
         })
     }catch (e){
         console.log(`DB error: ${e}`)
