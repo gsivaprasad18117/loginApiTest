@@ -66,7 +66,6 @@ app.post('/login/',async(request,response)=>{
     const dbUser = await db.get(getUserQuery)
     if(dbUser===undefined){
         response.status(400);
-        response.send("Username or Password is Incorrect");
     }else{
         const isPasswordCorrect = await bcrypt.compare(password,dbUser.password);
         if(isPasswordCorrect){
