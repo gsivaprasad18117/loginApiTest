@@ -8,7 +8,8 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const app = express()
 
-app.use(cors({origin:'*'}))
+app.use(cors());
+app.use(express.static('public'))
 app.use(express.json());
 
 const dbPath = path.join(__dirname,"loginInfo.db");
@@ -21,8 +22,8 @@ const initializeDBAnsServer = async ()=>{
             filename:dbPath,
             driver:sqlite3.Database,    
         })
-        app.listen(3000,()=>{
-            console.log("server is running at 3000")
+        app.listen(3001,()=>{
+            console.log("server is running at 3001")
         })
     }catch (e){
         console.log(`DB error: ${e}`)
@@ -39,6 +40,7 @@ app.get('/',async(request,response)=>{
 //User Register API
 app.post('/register/',async(request,response)=>{
     const {username,name,password,gender,location} = request.body;
+    console.log(request.body)
     const hashedPassword = await bcrypt.hash(password,10);
     const getUserQuery = `SELECT * FROM user WHERE username = '${username}'`;
     const dbUser = await db.get(getUserQuery)
@@ -48,10 +50,10 @@ app.post('/register/',async(request,response)=>{
             user(username,name,password,gender,location)
         VALUES('${username}','${name}','${hashedPassword}','${gender}','${location}')`;
         await db.run(newUserQuery);
-        response.send("User created successfully")
+        response.send({message:"User created successfully"})
     }else{
         response.status(400);
-        response.send("Username already exists")
+        response.send({message:"Username already exists"})
     }
 });
 
@@ -65,7 +67,8 @@ app.post('/login/',async(request,response)=>{
     const getUserQuery = `SELECT*FROM user WHERE username = '${username}'`;
     const dbUser = await db.get(getUserQuery)
     if(dbUser===undefined){
-        response.status(400);
+        response.status(401);
+        response.send({message:"Invalid User"});
     }else{
         const isPasswordCorrect = await bcrypt.compare(password,dbUser.password);
         if(isPasswordCorrect){
@@ -73,8 +76,8 @@ app.post('/login/',async(request,response)=>{
             const jwttoken = jwt.sign(payload,"SECRET_TOKEN")
             response.send({jwttoken})
         }else{
-            response.status(400);
-            response.send("Invalid Password")
+            response.status(401);
+            response.send("Invalid Password");
         }
     }
 })
