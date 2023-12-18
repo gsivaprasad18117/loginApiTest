@@ -32,10 +32,6 @@ const initializeDBAnsServer = async ()=>{
 }
 initializeDBAnsServer();
 
-//slash API
-app.get('/',async(request,response)=>{
-    response.send("It's working priya")
-})
 
 //User Register API
 app.post('/register/',async(request,response)=>{
