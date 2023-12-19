@@ -9,9 +9,7 @@ const jwt = require("jsonwebtoken");
 const app = express()
 
 app.use(
-    cors({
-        origin:'http://localhost:3000'
-    })
+    cors()
 )
 app.use(express.static('public'))
 app.use(express.json());
@@ -57,7 +55,7 @@ app.post('/register/',async(request,response)=>{
     }
 });
 
-app.get('/bot/',async(request,response)=>{
+app.get('/',async(request,response)=>{
     response.send('The path is changing')
 })
 
